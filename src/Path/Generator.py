@@ -1,5 +1,5 @@
 import random
-
+from .Encoder import Encoder
 
 class Generator:
 
@@ -21,8 +21,10 @@ class Generator:
         matrix[startX][startY] = 'S'
         matrix[goalX][goalY] = 'F'
 
-        self.__randomizeMap(matrix)
+        encoder = Encoder()
 
+        self.__randomizeMap(matrix)
+        encoder.encode(matrix, filename)
         self.__printMatrix(matrix)
 
 
