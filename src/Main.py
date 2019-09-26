@@ -1,2 +1,8 @@
+import random
+
+from src.Path.Generator import Generator
+
 if __name__ == '__main__':
-    print("hello")
+    generator = Generator()
+    generator.generateRandomMap(50,50,"") #change dimension here
+
