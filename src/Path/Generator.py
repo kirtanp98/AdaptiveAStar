@@ -8,10 +8,6 @@ goalState = None
 
 class Generator:
 
-    def __init__(self):
-        print("hello")
-
-
     def generateRandomMap(self, x, y, filename):
         matrix= self.__generateMatrix(x,y)
 
