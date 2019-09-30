@@ -27,7 +27,7 @@ class Generator:
 
         encoder = Encoder()
 
-        #self.__randomizeMap(matrix)
+        self.__randomizeMap(matrix)
         #encoder.encode(matrix, filename)
         self.__printMatrix(matrix)
         return matrix
@@ -56,7 +56,11 @@ class Generator:
         cols = len(matrix[0])
 
         for row in range(rows):
-            print(matrix[row])
+            for col in range(cols):
+                state = matrix[row][col]
+                print(state.isBlocked(),end="") #end prevents creating a newline for every print
+                print(" ",end=" ") #True_True instead of TrueTrue
+            print("") #line break to distinct rows
 
     def __randomizeMap(self, matrix):
         rows = len(matrix)
