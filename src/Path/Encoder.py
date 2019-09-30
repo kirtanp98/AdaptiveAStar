@@ -9,8 +9,10 @@ class Encoder:
 
         for row in range(rows):
             for col in range(cols):
-                f.write(str(matrix[row][col]))
-                f.write(" ")
-
+                state = matrix[row][col]
+                if(state.isBlocked()): # 1 represents blocked, while 0 is unblocked
+                    f.write("1 ")
+                else:
+                    f.write("0 ")
             f.write("\n") # linebreak for each row
         f.close()
