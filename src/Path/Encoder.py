@@ -1,4 +1,4 @@
-# will convert matrix to a textfile
+# will convert matrix to a visual textfile
 
 class Encoder:
     def encode(self, matrix, filename):

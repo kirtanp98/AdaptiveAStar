@@ -20,11 +20,10 @@ class Generator:
         goalX = random.randint(0,x-1)
         goalY = random.randint(0,y-1)
         goalState = matrix[goalX][goalY]
-
         encoder = Encoder()
 
         self.__randomizeMap(matrix)
-        #encoder.encode(matrix, filename)
+        encoder.encode(matrix, filename)
         self.__printMatrix(matrix)
         return matrix
 
