@@ -1,6 +1,6 @@
 import random
 
-from src.path.Generator import Generator
+from src.Path.Generator import Generator
 
 if __name__ == '__main__':
     generator = Generator()
