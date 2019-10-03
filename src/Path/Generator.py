@@ -69,8 +69,8 @@ class Generator:
                 if currentState != self.startState or currentState != self.goalState: #skip start or goal states
                     # if randomProb > 3 then it is unblocked (this ensures a 70% probability)
                     randomProbability = random.randint(1,10)
-                    if randomProbability <= 3:  # 30% chance to get <= 3 out of 10. 30% to block a path
-                        currentState.blocked = True  # 1 indicates the path is blocked
+                    if randomProbability <= 3:  # 30% chance to get <= 3 out of 10. 30% to block a Path
+                        currentState.blocked = True  # 1 indicates the Path is blocked
         return matrix
 
     def decode(self, filename):
