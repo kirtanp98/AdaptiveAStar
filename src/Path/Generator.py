@@ -3,10 +3,11 @@ import re
 from .Encoder import Encoder
 from .State import State
 
-class Generator:
+#Global variables
+startState = None
+goalState = None
 
-    startState = None
-    goalState = None
+class Generator:
 
     def generateRandomMap(self, x, y, filename):
         matrix= self.__generateMatrix(x,y)
@@ -14,12 +15,12 @@ class Generator:
         # randomly selects indices to be the start
         startX = random.randint(0,x-1)
         startY = random.randint(0,y-1)
-        self.startState = matrix[startX][startY]
+        startState = matrix[startX][startY]
 
         # randomly selects indices to be the goal
         goalX = random.randint(0,x-1)
         goalY = random.randint(0,y-1)
-        self.goalState = matrix[goalX][goalY]
+        goalState = matrix[goalX][goalY]
         encoder = Encoder()
 
         self.__randomizeMap(matrix)
@@ -64,7 +65,7 @@ class Generator:
         for row in range(rows):
             for col in range(cols):
                 currentState = matrix[row][col]
-                if currentState != self.startState or currentState != self.goalState: #skip start or goal states
+                if currentState != startState or currentState != goalState: #skip start or goal states
                     # if randomProb > 3 then it is unblocked (this ensures a 70% probability)
                     randomProbability = random.randint(1,10)
                     if randomProbability <= 3:  # 30% chance to get <= 3 out of 10. 30% to block a path
@@ -106,10 +107,6 @@ class Generator:
                     matrix[i-1][col] = state
                     col = col+1
             col = 0 # reset it back to the beginning for the next row
-
-            # init them so the algorithm knows where to start and finish
-            self.startState = matrix[startX][startY]
-            self.goalState = matrix[goalX][goalY]
         return matrix
 
 
