@@ -29,6 +29,7 @@ class Generator:
             j = bound[1]
             result.append(matrix[i][j])
 
+        result = list(filter(lambda state:  state.explored == False, result)) # only consider unvisited neighbors
         return result
 
     def generateRandomMap(self, x, y, filename):
