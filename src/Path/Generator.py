@@ -3,8 +3,6 @@ import re
 from .Encoder import Encoder
 from .State import State
 
-
-
 class Generator:
 
     startState = None
