@@ -15,5 +15,11 @@ class State:
     def isExplored(self):
         return self.explored
 
+    def inBound(self, width, height):
+        x = self.xPos
+        y = self.yPos
+
+        result = 0 <= x < width and 0 <= y < height
+        return result
 
 
