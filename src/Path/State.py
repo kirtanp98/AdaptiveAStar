@@ -15,5 +15,14 @@ class State:
     def isExplored(self):
         return self.explored
 
+    def inBound(self, width, height):
+        x = self.xPos
+        y = self.yPos
 
+        result = 0 <= x < width and 0 <= y < height
+        return result
+
+    # used as a custom comparator for heapq
+    def __lt__(self, other):
+        return self.fVal < other.fVal
 
