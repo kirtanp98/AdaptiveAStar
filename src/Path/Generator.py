@@ -8,20 +8,27 @@ class Generator:
     startState = None
     goalState = None
 
+    # return type: list of states
     def getNeighbors(self, matrix, state):
         x = state.xPos
         y = state.yPos
         row_length = len(matrix)
         col_length = len(matrix[0])
 
-        result = [(x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)]
-        #result = filter(state.inBound(len(matrix), len(matrix[0])), result)
-        result = list(filter(lambda tuple:
-                             0<=tuple[0]< row_length and 0<=tuple[1]<col_length,
-                             result))
-        # result = filter((not state.blocked), result)
-        for s in result:
-            print(s)
+        neighbor_bounds = [(x + 1, y), (x - 1, y), (x , y + 1), (x , y - 1)]
+        neighbor_bounds = list(filter(lambda tuple: # keeps only valid bounds unlike -1
+                             0 <= tuple[0] < row_length and
+                             0 <= tuple[1] < col_length,
+                             neighbor_bounds))
+
+        result = []
+
+        # convert from bound to the actual State object in the matrix
+        for bound in neighbor_bounds:
+            i = bound[0]
+            j = bound[1]
+            result.append(matrix[i][j])
+
         return result
 
     def generateRandomMap(self, x, y, filename):
