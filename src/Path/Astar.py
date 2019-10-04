@@ -13,7 +13,7 @@ class Astar:
 
     def search(self, grid, start, goal): # actual a* search method
         frontier = BinaryHeapQueue() # priority queue
-        frontier.put(start, 0) # frontier is basically going through the grid and getting the cells in to the queue
+        frontier.put(start) # frontier is basically going through the grid and getting the cells in to the queue
         cameFrom = {} # path from start to goal
         costSoFar = {} # cost
         cameFrom[start] = None
@@ -25,19 +25,22 @@ class Astar:
         while not frontier.empty(): # the actual path searching
             current = frontier.get()
 
-            if current == goal: # when it gets to the goal the loop will break
+            if current.isBlocked():
+                continue
+            if (current.xPos == goal.xPos) and (current.yPos == goal.yPos):# when it gets to the goal the loop will break
                 break
 
-            for next in gen.getNeighbors(grid, current): # getting the neighbors
+            for neighbor in gen.getNeighbors(grid, current): # getting the neighbors
+                neighbor.explored = True # so we do not visit the same node again
                 newCost = costSoFar[current] + 1 # because its a grid, the cost to go to another cell is just 1
 
-                if next not in costSoFar or newCost < costSoFar[next]:
-                    costSoFar[next] = newCost
-                    priority = newCost + self.heuristic(goal, next)
-                    frontier.put(next, priority)
-                    cameFrom[next] = current
+                if neighbor not in costSoFar or newCost < costSoFar[neighbor]:
+                    costSoFar[neighbor] = newCost
+                    neighbor.fVal = newCost + self.heuristic(goal, neighbor)
+                    frontier.put(neighbor)
+                    cameFrom[neighbor] = current
 
-            return cameFrom, costSoFar # returns the path and cost
+        return cameFrom
 
 
 class BinaryHeapQueue: # priority queue implementation
@@ -47,8 +50,9 @@ class BinaryHeapQueue: # priority queue implementation
     def empty(self):
         return len(self.elements) == 0
 
-    def put(self, item, priority):
-        heapq.heappush(self.elements, (priority, item))
+    def put(self, item):
+        heapq.heappush(self.elements, item)
+
 
     def get(self):
-        return heapq.heappop(self.elements)[1]
+        return heapq.heappop(self.elements)
