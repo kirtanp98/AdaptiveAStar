@@ -24,23 +24,25 @@ class Astar:
 
         while not frontier.empty(): # the actual path searching
             current = frontier.get()
+            current.explored = True  # so we do not visit the same node again
 
-            if current.isBlocked():
+            if current.isBlocked(): #ignore the blocked states
                 continue
-            if (current.xPos == goal.xPos) and (current.yPos == goal.yPos):# when it gets to the goal the loop will break
-                break
+            if current == goal:# when it gets to the goal the loop will break
+                print("Found goal!")
+                return goal
 
             for neighbor in gen.getNeighbors(grid, current): # getting the neighbors
-                neighbor.explored = True # so we do not visit the same node again
                 newCost = costSoFar[current] + 1 # because its a grid, the cost to go to another cell is just 1
 
                 if neighbor not in costSoFar or newCost < costSoFar[neighbor]:
                     costSoFar[neighbor] = newCost
                     neighbor.fVal = newCost + self.heuristic(goal, neighbor)
                     frontier.put(neighbor)
-                    cameFrom[neighbor] = current
-
-        return cameFrom
+                    neighbor.parent = current
+                    #cameFrom [neighbor] = current
+        print("Can not reach goal!")
+        return None
 
 
 class BinaryHeapQueue: # priority queue implementation
