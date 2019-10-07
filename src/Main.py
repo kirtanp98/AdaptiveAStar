@@ -14,7 +14,7 @@ if __name__ == '__main__':
 
     algo = Astar()
 
-    #state = algo.search(matrix,start,goal)
+    state = algo.search(matrix,start,goal)
 
     helper = Helper()
 
