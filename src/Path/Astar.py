@@ -8,6 +8,8 @@ import src.Path.Generator
 # still need to set the values in the cells, and make the function actual work
 class Astar:
 
+    tiebreaker = False
+
     def heuristic(self, point1, point2):  # this is the heuristic function that calculates the manhattan distance
         return abs(point1.xPos - point2.xPos) + abs(point1.yPos - point2.yPos)
 
@@ -37,7 +39,15 @@ class Astar:
 
                 if neighbor not in costSoFar or newCost < costSoFar[neighbor]:
                     costSoFar[neighbor] = newCost
-                    neighbor.fVal = newCost + self.heuristic(goal, neighbor)
+                    neighbor.gVal = newCost
+                    neighbor.hVal = self.heuristic(goal, neighbor)
+                    neighbor.fVal = neighbor.gVal + neighbor.hVal
+                    # tie breaker code - testing - without a tie breaker a* will be slow
+                    # comment out code to disable tie breaker
+                    if self.tiebreaker:
+                        temp = (2*neighbor.fVal)-neighbor.gVal
+                        neighbor.fVal = temp
+
                     frontier.put(neighbor)
                     neighbor.parent = current
                     #cameFrom [neighbor] = current
