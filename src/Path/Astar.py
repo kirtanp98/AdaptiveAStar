@@ -43,8 +43,10 @@ class Astar:
                     neighbor.hVal = self.heuristic(goal, neighbor)
                     neighbor.fVal = neighbor.gVal + neighbor.hVal
                     # tie breaker code - testing - without a tie breaker a* will be slow
-                    # comment out code to disable tie breaker
                     if self.tiebreaker:
+                        # Another tie breaker code that changes the h value
+                        # neighbor.hVal *= (1.0 + 0.01)
+                        # neighbor.fVal = neighbor.gVal + neighbor.hVal
                         temp = (2*neighbor.fVal)-neighbor.gVal
                         neighbor.fVal = temp
 
