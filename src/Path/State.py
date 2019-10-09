@@ -2,6 +2,7 @@ class State:
     xPos = None
     yPos = None
     parent = None
+    next = None
     blocked = False
     explored = False # so we don't continuously visit the same node
     gVal = 0
