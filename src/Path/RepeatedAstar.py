@@ -29,18 +29,24 @@ class RepeatedAstar:
             for neighbors in gen.getNeighbors(self.matrix, tempState):
                 #self.tester += 1
                 #print(self.tester)
-                if neighbors.search < self.counter:
-                    neighbors.gVal = 9999999
-                    neighbors.search = self.counter
-                if neighbors.gVal > tempState.gVal + 1:#c(tempState,neighbors)
-                    neighbors.gVal = tempState.gVal + 1
-                    neighbors.parent = tempState
-                    if neighbors in self.openSet.elements:
-                        self.openSet.elements.remove(neighbors)
-                        break
-                    neighbors.hVal = self.heuristic(self.goal, neighbors)
-                    neighbors.fVal = neighbors.gVal + neighbors.hVal
+                if neighbors.blocked:  # if blocked, we put it in the open list with a large fVal
+                    neighbors.fVal = 9999999
                     self.openSet.put(neighbors)
+                else:
+                    if neighbors.explored:
+                        continue
+                    else:
+                        neighbors.gVal = tempState.gVal + 1
+
+                        if neighbors in self.openSet.elements:
+                            self.openSet.elements.remove(neighbors)
+                        neighbors.explored = True
+                        neighbors.hVal = self.heuristic(self.goal, neighbors)
+                        neighbors.fVal = neighbors.gVal + neighbors.hVal
+                        neighbors.parent = tempState
+                        self.openSet.put(neighbors)
+
+
 
     def repeatedAstar(self, start, goal):
         counter = 0
@@ -54,7 +60,7 @@ class RepeatedAstar:
             self.counter += 1
             start.gVal = 0
             start.search = counter
-            goal.gVal = 100000000
+            goal.gVal = 9999998 # this value is going to be one less lower than the blocked units
             goal.search = counter
             self.closeSet = []
             start.hVal = self.heuristic(start, goal)
@@ -67,7 +73,6 @@ class RepeatedAstar:
                 print("Did not reach the target")
                 reachedTarget = False
                 break
-
 
             agent = start
             while agent is not None:
