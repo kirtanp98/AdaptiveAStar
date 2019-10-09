@@ -2,6 +2,7 @@ import random
 from src.Path.Astar import Astar
 from src.Path.Generator import Generator
 from src.Utility.Helper import Helper
+from src.Path.RepeatedAstar import RepeatedAstar, BinaryHeapQueue
 
 if __name__ == '__main__':
     generator = Generator()
@@ -12,9 +13,17 @@ if __name__ == '__main__':
     start = generator.startState
     goal = generator.goalState
 
-    algo = Astar()
+    # algo = Astar()
+    #
+    # state = algo.search(matrix,start,goal)
+    #
+    # helper = Helper()
 
-    state = algo.search(matrix,start,goal)
+    algo = RepeatedAstar()
+    algo.matrix = matrix
+    algo.goal = goal
+
+    state = algo.repeatedAstar(start, goal)
 
     helper = Helper()
 

@@ -7,6 +7,7 @@ class State:
     gVal = 0
     hVal = 0
     fVal = 0
+    search = 0
 
 
     def isBlocked(self):
