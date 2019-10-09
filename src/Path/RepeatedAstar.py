@@ -1,16 +1,19 @@
 import heapq
 import src.Path.Generator
-from src.Path.AdaptiveAstar import BinaryHeapQueue
 
 
 class RepeatedAstar:
 
     matrix = None
-    openSet = BinaryHeapQueue()
+    openSet = None
     closeSet = []
     counter = 0
     goal = None
     tester = 0
+
+    # Init heap here
+    def __init__(self):
+        self.openSet = BinaryHeapQueue()
 
 
     def heuristic(self, point1, point2):  # this is the heuristic function that calculates the manhattan distance
