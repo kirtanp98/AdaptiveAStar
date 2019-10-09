@@ -29,24 +29,32 @@ class RepeatedAstar:
             for neighbors in gen.getNeighbors(self.matrix, tempState):
                 #self.tester += 1
                 #print(self.tester)
-                if neighbors.blocked:  # if blocked, we put it in the open list with a large fVal
-                    neighbors.fVal = 9999999
+                if neighbors.search < self.counter:
+                    neighbors.gVal = 100000000
+                    neighbors.search = self.counter
+                if neighbors.gVal > tempState.gVal + self.costOfState(neighbors):#c(tempState,neighbors)
+                    neighbors.gVal = tempState.gVal + self.costOfState(neighbors)
+                    neighbors.parent = tempState
+                    if neighbors in self.openSet.elements:
+                        self.openSet.elements.remove(neighbors)
+                    neighbors.hVal = self.heuristic(self.goal, neighbors)
+                    neighbors.fVal = neighbors.gVal + neighbors.hVal
                     self.openSet.put(neighbors)
-                else:
-                    if neighbors.explored:
-                        continue
-                    else:
-                        neighbors.gVal = tempState.gVal + 1
-
-                        if neighbors in self.openSet.elements:
-                            self.openSet.elements.remove(neighbors)
-                        neighbors.explored = True
-                        neighbors.hVal = self.heuristic(self.goal, neighbors)
-                        neighbors.fVal = neighbors.gVal + neighbors.hVal
-                        neighbors.parent = tempState
-                        self.openSet.put(neighbors)
 
 
+    def costOfState(self, state):
+        if state.isBlocked():
+            return 100000000  #if it is blocked, then its cost is a large number
+        else:
+            return 1
+    def generatePath(self, start, goal):
+        curr = goal
+        prev = goal.parent
+
+        while prev != None and curr != start:
+            prev.next = curr
+            prev = prev.parent
+            curr = curr.parent
 
     def repeatedAstar(self, start, goal):
         counter = 0
@@ -56,12 +64,12 @@ class RepeatedAstar:
         reachedTarget = True
 
         while start != goal:
-            print("here")
-            self.counter += 1
+            #print("here")
+            self.counter  = self.counter + 1
             start.gVal = 0
-            start.search = counter
-            goal.gVal = 9999998 # this value is going to be one less lower than the blocked units
-            goal.search = counter
+            start.search = self.counter
+            goal.gVal = 100000000
+            goal.search = self.counter
             self.closeSet = []
             start.hVal = self.heuristic(start, goal)
             start.fVal = start.gVal + start.hVal
@@ -74,9 +82,12 @@ class RepeatedAstar:
                 reachedTarget = False
                 break
 
+            lastResult = self.openSet.get()
             agent = start
-            while agent is not None:
-                agent = start.parent
+            self.generatePath(start,lastResult)
+
+            while agent.gVal <= start.gVal:
+                agent = agent.next
 
             start = agent
             #move the agent to where the start state
@@ -85,6 +96,8 @@ class RepeatedAstar:
 
         if reachedTarget:
             print("Reached Target")
+
+
 
 
 class BinaryHeapQueue: # priority queue implementation
