@@ -3,7 +3,6 @@ import re
 from .Encoder import Encoder
 from .State import State
 
-
 class Generator:
     startState = None
     goalState = None
@@ -134,3 +133,21 @@ class Generator:
             self.startState = matrix[startX][startY]
             self.goalState = matrix[goalX][goalY]
         return matrix
+
+    def generateAgentMatrix(self, matrix, start):
+        row = len(matrix)
+        col = len(matrix[0])
+        newMatrix = self.__generateMatrix(row, col)
+
+        neighbors = self.getNeighbors(matrix,start)
+        for neighbor in neighbors: # looking for blocked neighbors in the actual matrix
+            if(neighbor.isBlocked()):
+                x = neighbor.xPos
+                y = neighbor.yPos
+                newMatrix[x][y] = neighbor
+        return newMatrix
+
+
+
+
+
