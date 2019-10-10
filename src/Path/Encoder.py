@@ -1,7 +1,7 @@
 # will convert matrix to a visual textfile
 
 class Encoder:
-    def encode(self,matrix, filename,startX,startY,goalX,goalY):
+    def encode(self, matrix, filename, startX, startY, goalX, goalY):
         # need to add a way specify a location
         rows = len(matrix)
         cols = len(matrix[0])

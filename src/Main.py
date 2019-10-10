@@ -28,7 +28,7 @@ if __name__ == '__main__':
     helper = Helper()
 
     # creates a solution file with the path image
-    helper.generate_sol_file(matrix,state)
+    helper.generate_sol_file(matrix,start)
 
 
 
