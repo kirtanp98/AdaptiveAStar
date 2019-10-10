@@ -17,6 +17,6 @@ class Helper():
             y = state.yPos
             matrix[x][y] = '~'
             state = state.parent
-        encoder.encode(matrix,"solution")
+        encoder.sol_encode(matrix,"solution")
 
 
