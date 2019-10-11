@@ -3,12 +3,14 @@ import src.Path.Generator
 
 
 class RepeatedAstar:
-    matrix = None
+    real_matrix = None  # we move in this matrix, but compute the path in the observe_matrix
+    observe_matrix = None  # only tracks obstacles the agent has seem so far.
+
     openSet = None
     closeSet = []
     counter = 0
-    goal = None
-    tester = 0
+    o_goal = None  # goal state in the observe_matrix
+    o_start = None
 
     # Init heap here
     def __init__(self):
@@ -20,11 +22,11 @@ class RepeatedAstar:
     def computePath(self):
         gen = src.Path.Generator.Generator()
 
-        while len(self.openSet.elements) and self.goal.gVal > self.openSet.peek().fVal:
+        while len(self.openSet.elements) and self.o_goal.gVal > self.openSet.peek().fVal:
             tempState = self.openSet.get()
             self.closeSet.append(tempState)
 
-            for neighbors in gen.getNeighbors(self.matrix, tempState):
+            for neighbors in gen.getNeighbors(self.observe_matrix, tempState):
                 if neighbors.search < self.counter:
                     neighbors.gVal = 100000000
                     neighbors.search = self.counter
@@ -33,7 +35,7 @@ class RepeatedAstar:
                     neighbors.parent = tempState
                     if neighbors in self.openSet.elements:
                         self.openSet.elements.remove(neighbors)
-                    neighbors.hVal = self.heuristic(self.goal, neighbors)
+                    neighbors.hVal = self.heuristic(self.o_goal, neighbors)
                     neighbors.fVal = neighbors.gVal + neighbors.hVal
                     # tie breaker
                     temp = (2 * neighbors.fVal) - neighbors.gVal
@@ -63,22 +65,25 @@ class RepeatedAstar:
     def traverse(self, start):
         curr = start
         while curr.next != None:
-            print(curr.xPos, curr.yPos)
+            #print(curr.xPos, curr.yPos)
             curr = curr.next
 
-    def repeatedAstar(self, start, goal):
+    def repeatedAstar(self, real_start, real_goal):
         reachedTarget = True
+        o_start = self.o_start
+        o_goal = self.o_goal
 
-        while start != goal:
+        while real_start != real_goal:
+            self.openSet.clear()
             self.counter = self.counter + 1
-            start.gVal = 0
-            start.search = self.counter
-            goal.gVal = 100000000
-            goal.search = self.counter
+            o_start.gVal = 0
+            o_start.search = self.counter
+            o_goal.gVal = 100000000
+            o_goal.search = self.counter
             self.closeSet = []
-            start.hVal = self.heuristic(start, goal)
-            start.fVal = start.gVal + start.hVal
-            self.openSet.put(start)
+            o_start.hVal = self.heuristic(o_start, o_goal)
+            o_start.fVal = o_start.gVal + o_start.hVal
+            self.openSet.put(o_start)
 
             self.computePath()
 
@@ -88,29 +93,43 @@ class RepeatedAstar:
                 break
 
             lastResult = self.openSet.get()
-            agent = start
-            self.generatePath(start,lastResult)
+            real_agent = real_start
 
-            # while agent.gVal <= start.gVal:
-            #     agent = agent.next
-            #     if agent is None:
-            #         break
 
-            while agent != None:
-                agent = agent.next
-                if agent == goal:
+            self.generatePath(o_start,lastResult)
+
+
+            # We are moving the agent in the observe_matrix & real_matrix simultaneously
+            while o_start != None:
+
+                x = o_start.xPos
+                y = o_start.yPos
+                prev_agent = real_agent #keeps track of agent's prev state in case we are currently in an obstacle
+                real_agent = self.real_matrix[x][y] #the agent is now moved to where the o_agent just moved
+
+                if real_agent.blocked == True:
+                    #if agent finds a obstacle in real matrix, update that in agentMatrix
+                    self.observe_matrix[real_agent.xPos][real_agent.yPos].blocked = True
+
+                    real_agent = prev_agent # we do not want to start in a blocked state
+                    o_start = self.observe_matrix[real_agent.xPos][real_agent.yPos] # safety measure
                     break
+                if real_agent == real_goal: # we were able to get the agent from start to goal in reality
+                    o_start = self.observe_matrix[real_agent.xPos][real_agent.yPos]
+                    break
+                o_start = o_start.next
 
-            if agent is None:
+            if real_agent is None:
                 break
 
-            start = agent
+            real_start = real_agent
             # move the agent to where the start state
             # Set the start state to the current agent
             # if the agent is not at the goal state then that means
 
         if reachedTarget:
             print("Reached Target")
+            return real_start
 
 
 class BinaryHeapQueue:  # priority queue implementation
@@ -128,3 +147,5 @@ class BinaryHeapQueue:  # priority queue implementation
 
     def peek(self):
         return self.elements[0]
+    def clear(self):
+        self.elements = []

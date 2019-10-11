@@ -6,29 +6,27 @@ from src.Path.RepeatedAstar import RepeatedAstar, BinaryHeapQueue
 
 if __name__ == '__main__':
     generator = Generator()
-   # generator.generateRandomMap(2,2,"test")
 
-    matrix = generator.decode("resources/map3")
+    matrix = generator.decode("resources/map5")
 
     start = generator.startState
     goal = generator.goalState
 
-    # algo = Astar()
-    #
-    # state = algo.search(matrix,start,goal)
-    #
-    # helper = Helper()
-
+    agent_matrix = generator.generateAgentMatrix(matrix, start)
+    agent_start = agent_matrix[start.xPos][start.yPos]
+    agent_goal = agent_matrix[goal.xPos][goal.yPos]
     algo = RepeatedAstar()
-    algo.matrix = matrix
-    algo.goal = goal
+
+    algo.real_matrix = matrix
+    algo.observe_matrix = agent_matrix
+    algo.o_start = agent_start
+    algo.o_goal = agent_goal
 
     state = algo.repeatedAstar(start, goal)
 
     helper = Helper()
 
-    # creates a solution file with the path image
-    helper.generate_sol_file(matrix,start)
+    helper.generate_sol_file(matrix,state)
 
 
 
