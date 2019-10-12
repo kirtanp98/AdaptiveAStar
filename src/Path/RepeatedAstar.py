@@ -72,6 +72,7 @@ class RepeatedAstar:
         reachedTarget = True
         o_start = self.o_start
         o_goal = self.o_goal
+        first_start = real_start #this is used to store the very first start position to avoid infinite while loops l8r
 
         while real_start != real_goal:
             self.openSet.clear()
@@ -107,6 +108,8 @@ class RepeatedAstar:
                 prev_agent = real_agent #keeps track of agent's prev state in case we are currently in an obstacle
                 real_agent = self.real_matrix[x][y] #the agent is now moved to where the o_agent just moved
 
+
+
                 if real_agent.blocked == True:
                     #if agent finds a obstacle in real matrix, update that in agentMatrix
                     self.observe_matrix[real_agent.xPos][real_agent.yPos].blocked = True
@@ -116,7 +119,11 @@ class RepeatedAstar:
                     break
                 if real_agent == real_goal: # we were able to get the agent from start to goal in reality
                     o_start = self.observe_matrix[real_agent.xPos][real_agent.yPos]
+                    real_agent.parent = prev_agent
                     break
+                #sometimes we backtrack to the very first start, so do not want to give the very start a parent, or else infinite while loop
+                if real_agent != first_start and prev_agent != real_agent and real_agent.parent == None:
+                    real_agent.parent = prev_agent
                 o_start = o_start.next
 
             if real_agent is None:
