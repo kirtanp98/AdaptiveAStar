@@ -35,7 +35,7 @@ class Encoder:
         for row in range(rows):
             for col in range(cols):
                 if matrix[row][col] == '~':
-                    f.write(" ")
+                    f.write("' ")
                 else:
                     state = matrix[row][col]
                     if (state.isBlocked()):  # 1 represents blocked, while 0 is unblocked
