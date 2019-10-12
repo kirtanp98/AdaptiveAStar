@@ -1,32 +1,25 @@
-import random
-from src.Path.Astar import Astar
 from src.Path.Generator import Generator
-from src.Utility.Helper import Helper
-from src.Path.RepeatedAstar import RepeatedAstar, BinaryHeapQueue
+from src.AlgorithmPicker import AlgorithmPicker
 
 if __name__ == '__main__':
-    generator = Generator()
+        generator = Generator()
+        algo_picker = AlgorithmPicker()
 
-    matrix = generator.decode("resources/map5")
+        #executes algorithm on all of our generated 50 maps.
 
-    start = generator.startState
-    goal = generator.goalState
+        for i in range(50):
+            print("Executing forward on Map"+str(i))
+            algo_picker.executeForwardAstar("resources/map"+str(i))
+            print("Executing backwards on Map" + str(i))
+            algo_picker.executeBackwardsAStar("resources/map"+str(i))
 
-    agent_matrix = generator.generateAgentMatrix(matrix, start)
-    agent_start = agent_matrix[start.xPos][start.yPos]
-    agent_goal = agent_matrix[goal.xPos][goal.yPos]
-    algo = RepeatedAstar()
 
-    algo.real_matrix = matrix
-    algo.observe_matrix = agent_matrix
-    algo.o_start = agent_start
-    algo.o_goal = agent_goal
-
-    state = algo.repeatedAstar(start, goal)
-
-    helper = Helper()
-
-    helper.generate_sol_file(matrix,state)
+        #debugging purpose ona smaller map
+        # for i in range(50):
+        #     generator = Generator()
+        #    # generator.generateRandomMap(5,5,"test")
+        #     algo_picker.executeBackwardsAStar("resources/map0")
+        #     #algo_picker.executeBackwardsAStar("test")
 
 
 
