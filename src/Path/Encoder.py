@@ -1,7 +1,7 @@
 # will convert matrix to a visual textfile
 
 class Encoder:
-    def encode(self,matrix, filename,startX,startY,goalX,goalY):
+    def encode(self, matrix, filename, startX, startY, goalX, goalY):
         # need to add a way specify a location
         rows = len(matrix)
         cols = len(matrix[0])
@@ -26,7 +26,7 @@ class Encoder:
         f.close()
 
     # does not include extra information at top
-    def encode(self, matrix, filename):
+    def sol_encode(self, matrix, filename):
         # need to add a way specify a location
         rows = len(matrix)
         cols = len(matrix[0])
@@ -35,7 +35,7 @@ class Encoder:
         for row in range(rows):
             for col in range(cols):
                 if matrix[row][col] == '~':
-                    f.write("` ")
+                    f.write("' ")
                 else:
                     state = matrix[row][col]
                     if (state.isBlocked()):  # 1 represents blocked, while 0 is unblocked

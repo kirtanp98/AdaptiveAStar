@@ -3,7 +3,6 @@ import re
 from .Encoder import Encoder
 from .State import State
 
-
 class Generator:
     startState = None
     goalState = None
@@ -34,19 +33,22 @@ class Generator:
 
     def generateRandomMap(self, x, y, filename):
         matrix = self.__generateMatrix(x, y)
+        self.__randomizeMap(matrix)
 
         # randomly selects indices to be the start
         startX = random.randint(0, x - 1)
         startY = random.randint(0, y - 1)
+        matrix[startX][startY].blocked = False
         self.startState = matrix[startX][startY]
 
         # randomly selects indices to be the goal
         goalX = random.randint(0, x - 1)
         goalY = random.randint(0, y - 1)
+        matrix[goalX][goalY].blocked = False
         self.goalState = matrix[goalX][goalY]
         encoder = Encoder()
 
-        self.__randomizeMap(matrix)
+
         encoder.encode(matrix, filename, startX, startY, goalX, goalY)
         # self.__printMatrix(matrix) // for debugging
         return matrix
@@ -134,3 +136,21 @@ class Generator:
             self.startState = matrix[startX][startY]
             self.goalState = matrix[goalX][goalY]
         return matrix
+
+    def generateAgentMatrix(self, matrix, start):
+        row = len(matrix)
+        col = len(matrix[0])
+        newMatrix = self.__generateMatrix(row, col)
+
+        neighbors = self.getNeighbors(matrix,start)
+        for neighbor in neighbors: # looking for blocked neighbors in the actual matrix
+            if(neighbor.isBlocked()):
+                x = neighbor.xPos
+                y = neighbor.yPos
+                newMatrix[x][y] = neighbor
+        return newMatrix
+
+
+
+
+

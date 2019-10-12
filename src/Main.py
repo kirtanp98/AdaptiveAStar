@@ -1,25 +1,25 @@
-import random
-from src.Path.Astar import Astar
 from src.Path.Generator import Generator
-from src.Utility.Helper import Helper
+from src.AlgorithmPicker import AlgorithmPicker
 
 if __name__ == '__main__':
-    generator = Generator()
-   # generator.generateRandomMap(2,2,"test")
+        generator = Generator()
+        algo_picker = AlgorithmPicker()
 
-    matrix = generator.decode("resources/map3")
+        #executes algorithm on all of our generated 50 maps.
 
-    start = generator.startState
-    goal = generator.goalState
+        for i in range(50):
+            print("Executing forward on Map"+str(i))
+            algo_picker.executeForwardAstar("resources/map"+str(i))
+            print("Executing backwards on Map" + str(i))
+            algo_picker.executeBackwardsAStar("resources/map"+str(i))
 
-    algo = Astar()
 
-    state = algo.search(matrix,start,goal)
-
-    helper = Helper()
-
-    # creates a solution file with the path image
-    helper.generate_sol_file(matrix,state)
+        #debugging purpose ona smaller map
+        # for i in range(50):
+        #     generator = Generator()
+        #    # generator.generateRandomMap(5,5,"test")
+        #     algo_picker.executeBackwardsAStar("resources/map0")
+        #     #algo_picker.executeBackwardsAStar("test")
 
 
 
