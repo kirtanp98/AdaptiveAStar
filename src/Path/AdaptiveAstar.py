@@ -29,7 +29,7 @@ class AdaptiveAstar:
 
     def closeSetReevaluate(self):
         for state in self.closeSet:
-            state.hVal = self.adaptiveHeuristic(state)
+            state.newHVal = self.adaptiveHeuristic(state)
             state.fVal = state.gVal + state.newHVal
 
     # adaptiveA computePath
@@ -80,6 +80,20 @@ class AdaptiveAstar:
                 prev.next = curr
                 break
 
+    def clearPath(self, start, goal):
+        curr = goal
+        prev = goal.parent
+
+        while prev != None and curr != start:
+            curr.parent = None
+            curr.next = None
+            prev.next = None
+            curr = prev
+            prev = prev.parent
+            if prev == start:
+                prev.next = curr
+                break
+
     def traverse(self, start):
         curr = start
         while curr.next != None:
@@ -99,16 +113,12 @@ class AdaptiveAstar:
             o_start.search = self.counter
             o_goal.gVal = 100000000
             o_goal.search = self.counter
-            #self.closeSet = [] # Don't want to empty the closeSet as we need them
+            self.closeSet = [] # Don't want to empty the closeSet as we need them
 
-            if o_start.hVal > 0:
-                o_start.hVal = self.adaptiveHeuristic(o_start)
-            else:
-                o_start.hVal = self.heuristic(o_start, o_goal)
-            # o_start.newHVal = self.adaptiveHeuristic(o_start)
             if o_start.newHVal > 0:
                 o_start.fVal = o_start.gVal + o_start.newHVal
             else:
+                o_start.hVal = self.heuristic(self.o_goal, o_start)
                 o_start.fVal = o_start.gVal + o_start.hVal
             self.openSet.put(o_start)
 

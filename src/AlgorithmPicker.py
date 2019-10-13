@@ -2,6 +2,7 @@ from src.Path.RepeatedAstar import RepeatedAstar
 from src.Path.Generator import Generator
 from src.Utility.Helper import Helper
 from src.Path.AdaptiveAstar import AdaptiveAstar
+import time
 
 
 class AlgorithmPicker:
@@ -68,12 +69,19 @@ class AlgorithmPicker:
         algo.o_start = agent_start
         algo.o_goal = agent_goal
 
+        startTime = time.time()
         state = algo.repeatedAstar(start, goal)
+        endTime = time.time()
+        print("Time " + str(endTime - startTime))
 
         algo.closeSetReevaluate()
+        algo.clearPath(start, goal)
 
         if state:
+            startTime = time.time()
             state = algo.adaptiveAstar(start, goal)
+            endTime = time.time()
+            print("Time " + str(endTime - startTime))
 
         helper = Helper()
         helper.generate_sol_file(matrix, state)
