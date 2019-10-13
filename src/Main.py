@@ -12,6 +12,8 @@ if __name__ == '__main__':
             algo_picker.executeForwardAstar("resources/map"+str(i))
             print("Executing backwards on Map" + str(i))
             algo_picker.executeBackwardsAStar("resources/map"+str(i))
+            print("Executing Adaptive on Map" + str(i))
+            algo_picker.executeAdaptiveAStar("resources/map"+str(i))
 
 
         #debugging purpose ona smaller map
