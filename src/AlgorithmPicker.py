@@ -75,7 +75,7 @@ class AlgorithmPicker:
         print("Time " + str(endTime - startTime))
 
         algo.closeSetReevaluate()
-        algo.clearPath(start, goal)
+        # algo.clearPath(start, goal)
 
         if state:
             startTime = time.time()
