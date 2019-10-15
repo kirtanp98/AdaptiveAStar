@@ -16,12 +16,8 @@ if __name__ == '__main__':
             algo_picker.executeAdaptiveAStar("resources/map"+str(i))
 
 
-        #debugging purpose ona smaller map
-        # for i in range(50):
-        #     generator = Generator()
-        #    # generator.generateRandomMap(5,5,"test")
-        #     algo_picker.executeBackwardsAStar("resources/map0")
-        #     #algo_picker.executeBackwardsAStar("test")
+
+
 
 
 
