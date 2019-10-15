@@ -8,6 +8,7 @@ class State:
     gVal = 0
     hVal = 0
     fVal = 0
+    newHVal = 0
     search = 0
 
 
