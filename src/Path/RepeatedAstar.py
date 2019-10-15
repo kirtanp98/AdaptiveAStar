@@ -135,7 +135,7 @@ class RepeatedAstar:
             # if the agent is not at the goal state then that means
 
         if reachedTarget:
-            print("Reached Target")
+            print("Reached Target"+"\n")
             return real_start
 
 

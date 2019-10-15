@@ -69,19 +69,19 @@ class AlgorithmPicker:
         algo.o_start = agent_start
         algo.o_goal = agent_goal
 
-        startTime = time.time()
+       # startTime = time.time()
         state = algo.repeatedAstar(start, goal)
-        endTime = time.time()
-        print("Time " + str(endTime - startTime))
+        #endTime = time.time()
+        #print("Time " + str(endTime - startTime))
 
         algo.closeSetReevaluate()
         # algo.clearPath(start, goal)
 
         if state:
-            startTime = time.time()
+            #startTime = time.time()
             state = algo.adaptiveAstar(start, goal)
-            endTime = time.time()
-            print("Time " + str(endTime - startTime))
+            #endTime = time.time()
+            #print("Time " + str(endTime - startTime))
 
         helper = Helper()
         helper.generate_sol_file(matrix, state)

@@ -171,7 +171,7 @@ class AdaptiveAstar:
             # if the agent is not at the goal state then that means
 
         if reachedTarget:
-            print("Reached Target with Adaptive A*")
+            print("Reached Target with Adaptive A*"+"\n")
             return real_start
 
 
@@ -269,7 +269,7 @@ class AdaptiveAstar:
             # if the agent is not at the goal state then that means
 
         if reachedTarget:
-            print("Reached Target with Repeated Forward A*")
+            #print("Reached Target with Repeated Forward A*")
             return real_start
 
 
